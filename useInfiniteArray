@@ -1,0 +1,19 @@
+import { useRef } from "react";
+import { useUpdateEffect } from "ahooks";
+
+const useInfiniteArray = (array, deps) => {
+    const arrayRef = useRef(null);
+    const index = useRef(0);
+    useUpdateEffect(() => {
+        if (arrayRef.current !== null) {
+            index.current = index.current < arrayRef.current.length - 1 ? index.current + 1 : 0;
+        }
+    }, deps)
+    if (!Array.isArray(array) || array.length === 0) return null;
+    if (arrayRef.current === null) {
+        arrayRef.current = array;
+    }
+    return arrayRef?.current?.index?.current ?? null;
+}
+
+export default useInfiniteArray
