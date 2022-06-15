@@ -1,6 +1,5 @@
 import { usePagination } from "ahooks";
 import { useState } from "react";
-import { get } from "lodash";
 import PropTypes  from "prop-types";
 const PAGINATION_MAPPING = {
     total: "totalCount",
@@ -20,16 +19,15 @@ const useTable = (getTableData, options = {}) => {
     );
     return {
         tableProps: {
-            dataSource: get(data, "list", []),
+            dataSource: data?.list ?? []
             loading,
             pagination: {
                 ...pagination,
                 onShowSizeChange: (_page, _pageSize) => pagination.pageSize !== _pageSize && pagination.onChange(_page, _pageSize)
             },
         },
-        isEmpty: !loading && get(data, "list", []).length === 0,
         refresh,
-        [PAGINATION_MAPPING.total]: get(data, "total", 0),
+        [PAGINATION_MAPPING.total]: data?.total ?? 0
         filterCallback: _filters => setFilters(_filters)
     };
 };
